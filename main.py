@@ -93,14 +93,17 @@ def init_welcome_and_rules():
 
     print_board()
 
-
 def print_board():
     """
     Print the game board
+    :return:
     """
-    print(row1)
-    print(row2)
-    print(row3)
+    print(f'{row1[0]} | {row1[1]} | {row1[2]}')
+    print('--+---+--')
+    print(f'{row2[0]} | {row2[1]} | {row2[2]}')
+    print('--+---+--')
+    print(f'{row3[0]} | {row3[1]} | {row3[2]}')
+
 
 def set_board_input(player):
     """
@@ -167,6 +170,15 @@ def reset_board():
     for idx, element in enumerate(row3):
         row3[idx] = ' '
 
+def new_game():
+    """
+    Start a new game by resetting the board and setting up the initial game state.
+    """
+    global count, game_is_running
+    reset_board()  # Clear the board
+    count = 0  # Reset the move counter
+    game_is_running = True  # Set game flag to True
+    start()  # Determine who starts the game
 
 def contain_symbol(symbol):
     return symbol in symbols
@@ -213,6 +225,15 @@ def win():
         winning_combination = [row1[2], row2[1], row3[0]]
         has_won = True
 
+    if len(winning_combination) > 0 and winning_combination[0] == player_one['symbol']:
+        winning_combination.append(player_one)
+        player_one['wins'] += 1
+    else:
+        winning_combination.append(player_two)
+        player_two['wins'] += 1
+
+
+
     print(f'winning_combination: {winning_combination}')
     print(f'has_won: {has_won}')
 
@@ -223,17 +244,11 @@ def win():
 init_welcome_and_rules()
 
 while is_running:
-    start()
-    reset_board()
-    # mocking
-    #mock_data()
-    print(f'player_one: {player_one}')
-    print(f'player_two: {player_two}')
-    game_is_running = True
-    print(f'GAME_IS_RUNNING {game_is_running}')
-    answer = None
-    while game_is_running:
 
+    new_game()
+
+    while game_is_running:
+        answer = None
         if count == 9:
             game_is_running = False
             print('Its a Draw. There is no winner.')
@@ -258,7 +273,7 @@ while is_running:
             if result[1]:
                 print(f'The Winner is {player_one['name']} ')
                 while answer not in ['y', 'n']:
-                    answer = input('Would you like to play another game? (y/n) ')
+                    answer = input('Would you play another game? (y/n)')
                     if answer == 'y':
                         game_is_running = False
                         break
@@ -285,20 +300,5 @@ while is_running:
                         game_is_running = False
                         is_running = False
                         break
-        elif count == 9:
-            game_is_running = False
-            print('Its a Draw. There is no winner.')
-            answer = input('Would you play another game? (y/n)')
-            while answer not in ['y', 'n']:
-                if answer == 'y':
-                    count = 0
-                    game_is_running = False
-                    break
-                else:
-                    print('The game is finished!')
-                    game_is_running = False
-                    is_running = False
-                    break
-
-            break
         count += 1
+
