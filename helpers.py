@@ -1,3 +1,6 @@
+"""
+Module contains all the functions that are needed for the game tic-tac-toe.
+"""
 import re
 from random import randint
 
@@ -17,15 +20,15 @@ def print_board_manual(cells):
     """
     Print the board for the manual
     """
-    print(f'\ty')
-    print(f'\t^')
+    print('\ty')
+    print('\t^')
     print(f'3\t|\t{cells[7]} | {cells[8]} | {cells[9]}')
     print('\t|\t--+---+--')
     print(f'2\t|\t{cells[4]} | {cells[5]} | {cells[6]}')
     print('\t|\t--+---+--')
     print(f'1\t|\t{cells[1]} | {cells[2]} | {cells[3]}')
-    print(f'\t----------------> x')
-    print(f'\t\t1\t2\t3')
+    print('\t----------------> x')
+    print('\t\t1\t2\t3')
 
 
 def get_user_input():
@@ -34,45 +37,32 @@ def get_user_input():
     :return: tuple of coordinates
     """
     while True:
-        coordinate_input = input(f'Please enter coordinates for placing your symbol: '
-                            f'\n (You can choose between 1,1 and 3,3) ')
+        coordinate_input = (
+            input('Please enter coordinates for placing your symbol: '
+                  '\n (You can choose between 1,1 and 3,3) '))
 
-        is_coordinate_valid = re.fullmatch("[1-3],[1-3]", coordinate_input)
+        is_coordinate_valid = (
+            re.fullmatch("[1-3],[1-3]", coordinate_input))
 
         if is_coordinate_valid:
             lst = coordinate_input.split(',')
             return int(lst[0]), int(lst[1])
-        else:
-            continue
 
 
-def get_cell_idx(x, y):
+def get_cell_idx(x_coordinate, y_coordinate):
     """
     Function to transform coordinates to cell
-    :param x: X-coordinate
-    :param y: Y-coordinate
+    :param x_coordinate: X-coordinate
+    :param y_coordinate: Y-coordinate
     :return: None if coordinates hit no cell
     """
-    if (x, y) == (1, 1):
-        return 1
-    elif (x, y) == (2, 1):
-        return 2
-    elif (x, y) == (3, 1):
-        return 3
-    elif (x, y) == (1, 2):
-        return 4
-    elif (x, y) == (2, 2):
-        return 5
-    elif (x, y) == (3, 2):
-        return 6
-    elif (x, y) == (1, 3):
-        return 7
-    elif (x, y) == (2, 3):
-        return 8
-    elif (x, y) == (3, 3):
-        return 9
-    else:
-        return None
+    coordinates_to_cell = {
+        (1, 1): 1, (2, 1): 2, (3, 1): 3,
+        (1, 2): 4, (2, 2): 5, (3, 2): 6,
+        (1, 3): 7, (2, 3): 8, (3, 3): 9
+    }
+
+    return coordinates_to_cell.get((x_coordinate, y_coordinate), None)
 
 
 def is_cell_engaged(cell):
@@ -81,10 +71,7 @@ def is_cell_engaged(cell):
     :param cell: the monitoring cell
     :return: True if cell is engaged, False if cell is not engaged
     """
-    if cell in ['X', 'O']:
-        return True
-    else:
-        return False
+    return cell in ['X', 'O']
 
 
 def set_input_to_board(cells, player_dictionary):
@@ -100,10 +87,9 @@ def set_input_to_board(cells, player_dictionary):
         if not is_cell_engaged(cells[cell_idx]):
             cells[cell_idx] = player_dictionary['symbol']
             break
-        else:
-            print(f'Cell is already engaged with symbol {cells[cell_idx]}.'
-                  f' Please enter new coordinates')
-            continue
+
+        print(f'Cell is already engaged with symbol {cells[cell_idx]}.'
+              f' Please enter new coordinates')
 
 
 def victory(cells, player_dictionary):
@@ -177,22 +163,24 @@ def set_names_and_symbol(player_dict1, player_dict2):
     :return:
     """
     player_dict1['name'] = input(f'What is your name '
-                               f'{player_dict1['player']}? ')
+                                 f'{player_dict1['player']}? ')
 
     while player_dict1['symbol'] not in ['X', 'O']:
         player_dict1['symbol'] = input('What is your symbol?'
-                                    '\n(You can choose between "X" and "O") ')
+                                       '\n(You can choose'
+                                       'between "X" and "O") ')
     if player_dict1['symbol'] == 'X':
         player_dict2['symbol'] = 'O'
     else:
         player_dict2['symbol'] = 'X'
 
     player_dict2['name'] = input(f'What is your name '
-                               f'{player_dict2['player']}? ')
+                                 f'{player_dict2['player']}? ')
 
     while player_dict1['symbol'] not in ['X', 'O']:
         player_dict1['symbol'] = input('What is your symbol?'
-                                    '\n(You can choose between "X" and "O") ')
+                                       '\n(You can choose between'
+                                       '"X" and "O") ')
 
 
 def whose_start(player_dict1, player_dict2):
@@ -236,9 +224,7 @@ def new_game(cells):
     if answer == 'y':
         reset_board_game(cells)
         return True
-    else:
-        return False
-
+    return False
 
 def switch_turn_flags(player_dict1, player_dict2):
     """
@@ -260,10 +246,5 @@ def reset_board_game(cells):
     Function to reset the board
     :param cells: Game board
     """
-    for idx, cell in enumerate(cells):
+    for idx in enumerate(cells):
         cells[idx] = ' '
-
-
-
-
-
