@@ -177,11 +177,6 @@ def set_names_and_symbol(player_dict1, player_dict2):
     player_dict2['name'] = input(f'What is your name '
                                  f'{player_dict2['player']}? ')
 
-    while player_dict1['symbol'] not in ['X', 'O']:
-        player_dict1['symbol'] = input('What is your symbol?'
-                                       '\n(You can choose between'
-                                       '"X" and "O") ')
-
 
 def whose_start(player_dict1, player_dict2):
     """
